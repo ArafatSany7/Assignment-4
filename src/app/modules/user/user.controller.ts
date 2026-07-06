@@ -37,8 +37,22 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const changeUserStatus = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { isBanned } = req.body;
+  const result = await UserService.changeUserStatus(id, isBanned);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User status updated successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   getMyProfile,
   updateMyProfile,
   getAllUsers,
+  changeUserStatus,
 };

@@ -37,7 +37,13 @@ const updateMyProfile = async (email: string, payload: any) => {
 };
 
 const getAllUsers = async () => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    where: {
+      role: {
+        in: ['CUSTOMER', 'TECHNICIAN'],
+      },
+    },
+  });
   
   const result = users.map(user => {
     const { password, ...userData } = user;
@@ -47,8 +53,27 @@ const getAllUsers = async () => {
   return result;
 };
 
+const changeUserStatus = async (id: string, isBanned: boolean) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id },
+    data: { isBanned },
+  });
+
+  const { password, ...userData } = updatedUser;
+  return userData;
+};
+
 export const UserService = {
   getMyProfile,
   updateMyProfile,
   getAllUsers,
+  changeUserStatus,
 };
