@@ -18,6 +18,25 @@ const getMyProfile = async (email: string) => {
   return userData;
 };
 
+const updateMyProfile = async (email: string, payload: any) => {
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { email },
+    data: payload,
+  });
+
+  const { password, ...userData } = updatedUser;
+  return userData;
+};
+
 export const UserService = {
   getMyProfile,
+  updateMyProfile,
 };
