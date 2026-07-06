@@ -1,0 +1,20 @@
+import { Request, Response } from 'express';
+import catchAsync from '../../../shared/catchAsync';
+import { TechnicianService } from './technician.service';
+import sendResponse from '../../../shared/sendResponse';
+import httpStatus from 'http-status';
+
+const createProfile = catchAsync(async (req: Request, res: Response) => {
+  const result = await TechnicianService.createProfile(req.user.email, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Technician profile created successfully',
+    data: result,
+  });
+});
+
+export const TechnicianController = {
+  createProfile,
+};

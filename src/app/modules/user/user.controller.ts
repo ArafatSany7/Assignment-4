@@ -40,7 +40,7 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 const changeUserStatus = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { isBanned } = req.body;
-  const result = await UserService.changeUserStatus(id, isBanned);
+  const result = await UserService.changeUserStatus(id as string, isBanned);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

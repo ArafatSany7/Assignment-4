@@ -11,7 +11,7 @@ const updateProfileSchema = z.object({
 
 const changeStatusSchema = z.object({
   body: z.object({
-    isBanned: z.boolean({ required_error: 'isBanned field is required' }),
+    isBanned: z.boolean({ message: 'isBanned field is required' }),
   }),
 });
 
