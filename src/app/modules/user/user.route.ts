@@ -20,4 +20,10 @@ router.patch(
   UserController.updateMyProfile
 );
 
+router.get(
+  '/',
+  auth(Role.ADMIN),
+  UserController.getAllUsers
+);
+
 export const UserRoutes = router;

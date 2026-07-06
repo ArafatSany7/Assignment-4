@@ -36,7 +36,19 @@ const updateMyProfile = async (email: string, payload: any) => {
   return userData;
 };
 
+const getAllUsers = async () => {
+  const users = await prisma.user.findMany();
+  
+  const result = users.map(user => {
+    const { password, ...userData } = user;
+    return userData;
+  });
+
+  return result;
+};
+
 export const UserService = {
   getMyProfile,
   updateMyProfile,
+  getAllUsers,
 };
