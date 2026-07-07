@@ -88,8 +88,34 @@ const getTechnicianBookings = async (userEmail: string) => {
   return result;
 };
 
+const changeBookingStatus = async (userEmail: string, bookingId: string, status: any) => {
+  const technician = await prisma.user.findUnique({ where: { email: userEmail } });
+
+  if (!technician || technician.role !== 'TECHNICIAN') {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Only technicians can update booking status');
+  }
+
+  const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+
+  if (!booking) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
+  }
+
+  if (booking.technicianId !== technician.id) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'You are not authorized to update this booking');
+  }
+
+  const result = await prisma.booking.update({
+    where: { id: bookingId },
+    data: { status },
+  });
+
+  return result;
+};
+
 export const BookingService = {
   createBooking,
   getCustomerBookings,
   getTechnicianBookings,
+  changeBookingStatus,
 };

@@ -26,4 +26,11 @@ router.get(
   BookingController.getTechnicianBookings
 );
 
+router.patch(
+  '/:id/status',
+  auth(Role.TECHNICIAN),
+  validateRequest(BookingValidation.changeBookingStatusSchema),
+  BookingController.changeBookingStatus
+);
+
 export const BookingRoutes = router;

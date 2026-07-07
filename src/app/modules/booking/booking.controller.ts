@@ -37,8 +37,23 @@ const getTechnicianBookings = catchAsync(async (req: Request, res: Response) => 
   });
 });
 
+const changeBookingStatus = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  
+  const result = await BookingService.changeBookingStatus(req.user.email, id, status);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Booking status updated successfully',
+    data: result,
+  });
+});
+
 export const BookingController = {
   createBooking,
   getCustomerBookings,
   getTechnicianBookings,
+  changeBookingStatus,
 };
