@@ -11,4 +11,10 @@ export default {
     secret: process.env.JWT_SECRET,
     expires_in: process.env.JWT_EXPIRES_IN,
   },
+  ssl: {
+    store_id: process.env.STORE_ID,
+    store_pass: process.env.STORE_PASSWORD,
+    is_live: process.env.IS_LIVE === 'true',
+    app_url: process.env.APP_URL || 'http://localhost:5000',
+  },
 };
