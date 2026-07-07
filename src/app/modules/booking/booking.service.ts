@@ -1,0 +1,38 @@
+import prisma from '../../../shared/prisma';
+import ApiError from '../../errors/ApiError';
+import httpStatus from 'http-status';
+
+const createBooking = async (userEmail: string, payload: any) => {
+  const customer = await prisma.user.findUnique({ where: { email: userEmail } });
+  
+  if (!customer || customer.role !== 'CUSTOMER') {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Only customers can book a service');
+  }
+
+  const technician = await prisma.user.findUnique({
+    where: { id: payload.technicianId, role: 'TECHNICIAN' },
+  });
+
+  if (!technician) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Technician not found');
+  }
+
+  const result = await prisma.booking.create({
+    data: {
+      customerId: customer.id,
+      technicianId: payload.technicianId,
+      date: new Date(payload.date),
+      timeSlot: payload.timeSlot,
+    },
+    include: {
+      customer: { select: { id: true, name: true, email: true, contactNo: true } },
+      technician: { select: { id: true, name: true, email: true, contactNo: true } },
+    },
+  });
+
+  return result;
+};
+
+export const BookingService = {
+  createBooking,
+};
