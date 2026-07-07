@@ -9,6 +9,16 @@ const createProfileSchema = z.object({
   }),
 });
 
+const updateProfileSchema = z.object({
+  body: z.object({
+    skills: z.array(z.string()).optional(),
+    experience: z.number().optional(),
+    pricing: z.number().optional(),
+    availability: z.any().optional(),
+  }),
+});
+
 export const TechnicianValidation = {
   createProfileSchema,
+  updateProfileSchema,
 };

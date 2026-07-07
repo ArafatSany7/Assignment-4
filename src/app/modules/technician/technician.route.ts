@@ -14,4 +14,11 @@ router.post(
   TechnicianController.createProfile
 );
 
+router.patch(
+  '/profile',
+  auth(Role.TECHNICIAN),
+  validateRequest(TechnicianValidation.updateProfileSchema),
+  TechnicianController.updateProfile
+);
+
 export const TechnicianRoutes = router;

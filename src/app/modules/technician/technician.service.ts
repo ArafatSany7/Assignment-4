@@ -42,6 +42,38 @@ const createProfile = async (email: string, payload: any) => {
   return result;
 };
 
+const updateProfile = async (email: string, payload: any) => {
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: { technicianProfile: true },
+  });
+
+  if (!user || user.role !== 'TECHNICIAN' || !user.technicianProfile) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Technician profile not found');
+  }
+
+  const result = await prisma.technicianProfile.update({
+    where: { id: user.technicianProfile.id },
+    data: payload,
+    include: {
+      category: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          contactNo: true,
+          address: true,
+          profileImg: true,
+        },
+      },
+    },
+  });
+
+  return result;
+};
+
 export const TechnicianService = {
   createProfile,
+  updateProfile,
 };

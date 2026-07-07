@@ -15,6 +15,18 @@ const createProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateProfile = catchAsync(async (req: Request, res: Response) => {
+  const result = await TechnicianService.updateProfile(req.user.email, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Technician profile updated successfully',
+    data: result,
+  });
+});
+
 export const TechnicianController = {
   createProfile,
+  updateProfile,
 };
