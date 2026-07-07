@@ -20,4 +20,10 @@ router.get(
   BookingController.getCustomerBookings
 );
 
+router.get(
+  '/incoming-bookings',
+  auth(Role.TECHNICIAN),
+  BookingController.getTechnicianBookings
+);
+
 export const BookingRoutes = router;

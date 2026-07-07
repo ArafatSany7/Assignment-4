@@ -26,7 +26,19 @@ const getCustomerBookings = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getTechnicianBookings = catchAsync(async (req: Request, res: Response) => {
+  const result = await BookingService.getTechnicianBookings(req.user.email);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Incoming bookings retrieved successfully',
+    data: result,
+  });
+});
+
 export const BookingController = {
   createBooking,
   getCustomerBookings,
+  getTechnicianBookings,
 };
