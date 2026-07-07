@@ -33,6 +33,34 @@ const createBooking = async (userEmail: string, payload: any) => {
   return result;
 };
 
+const getCustomerBookings = async (userEmail: string) => {
+  const customer = await prisma.user.findUnique({ where: { email: userEmail } });
+
+  if (!customer || customer.role !== 'CUSTOMER') {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Only customers can view their bookings');
+  }
+
+  const result = await prisma.booking.findMany({
+    where: { customerId: customer.id },
+    include: {
+      technician: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          contactNo: true,
+        },
+      },
+      payment: true,
+      review: true,
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return result;
+};
+
 export const BookingService = {
   createBooking,
+  getCustomerBookings,
 };

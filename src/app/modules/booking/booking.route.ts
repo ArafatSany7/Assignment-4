@@ -14,4 +14,10 @@ router.post(
   BookingController.createBooking
 );
 
+router.get(
+  '/my-bookings',
+  auth(Role.CUSTOMER),
+  BookingController.getCustomerBookings
+);
+
 export const BookingRoutes = router;
