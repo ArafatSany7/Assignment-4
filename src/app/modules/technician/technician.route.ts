@@ -21,4 +21,14 @@ router.patch(
   TechnicianController.updateProfile
 );
 
+router.get(
+  '/',
+  TechnicianController.getAllTechnicians
+);
+
+router.get(
+  '/:id',
+  TechnicianController.getSingleTechnician
+);
+
 export const TechnicianRoutes = router;
