@@ -47,7 +47,7 @@ const getPaymentHistory = catchAsync(async (req: Request, res: Response) => {
 
 const getPaymentDetails = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await PaymentService.getPaymentDetails(id, req.user.email);
+  const result = await PaymentService.getPaymentDetails(id as string, req.user.email);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

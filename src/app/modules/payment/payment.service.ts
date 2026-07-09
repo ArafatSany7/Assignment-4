@@ -1,6 +1,7 @@
 import prisma from '../../../shared/prisma';
 import ApiError from '../../errors/ApiError';
 import httpStatus from 'http-status';
+// @ts-ignore
 import SSLCommerzPayment from 'sslcommerz-lts';
 import config from '../../../config';
 import crypto from 'crypto';

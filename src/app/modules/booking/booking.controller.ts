@@ -41,7 +41,7 @@ const changeBookingStatus = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;
   
-  const result = await BookingService.changeBookingStatus(req.user.email, id, status);
+  const result = await BookingService.changeBookingStatus(req.user.email, id as string, status);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

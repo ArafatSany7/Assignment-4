@@ -40,7 +40,7 @@ const getAllTechnicians = catchAsync(async (req: Request, res: Response) => {
 
 const getSingleTechnician = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await TechnicianService.getSingleTechnician(id);
+  const result = await TechnicianService.getSingleTechnician(id as string);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
